@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize";
 
-//user model
+// user model
 module.exports = (sequelize: Sequelize, DataTypes: Record<string, string>) => {
   const User = sequelize.define(
     "user",
