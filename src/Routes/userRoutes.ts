@@ -1,15 +1,17 @@
 import express from "express";
-import { signup, login } from "../Controllers/userController";
-import { saveUser } from "../Middleware/useAuth";
+import { signup, login, signout, user } from "../Controllers/userController";
+import { saveUser, isAuthenticated } from "../Middleware/userAuth";
 import { Routes } from "./routes";
 
 const router = express.Router();
 
-// signup endpoint
 // passing the middleware function to the signup
 router.post(Routes.signup, saveUser, signup);
 
-// login route
 router.post(Routes.login, login);
+
+router.post(Routes.signout, signout);
+
+router.post(Routes.user, isAuthenticated, user);
 
 export default router;

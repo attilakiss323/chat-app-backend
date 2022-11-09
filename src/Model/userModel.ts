@@ -1,7 +1,7 @@
-import { Sequelize } from "sequelize";
+import { Sequelize, DataTypes } from "sequelize";
 
 // user model
-module.exports = (sequelize: Sequelize, DataTypes: Record<string, string>) => {
+module.exports = (sequelize: Sequelize) => {
   const User = sequelize.define(
     "user",
     {

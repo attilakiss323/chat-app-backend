@@ -39,7 +39,6 @@ export const signup = async (req: Request, res: Response) => {
 };
 
 // login authentication
-
 export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
@@ -61,7 +60,10 @@ export const login = async (req: Request, res: Response) => {
 
         // if password matches with the one in the database
         // go ahead and generate a cookie for the user
-        res.cookie("jwt", token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true });
+        res.cookie("token", token, {
+          maxAge: 1 * 24 * 60 * 60,
+          httpOnly: true,
+        });
 
         // send user data
         return res.status(201).send(user);
@@ -70,6 +72,36 @@ export const login = async (req: Request, res: Response) => {
       }
     } else {
       return res.status(401).send({ error: "Authentication failed" });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const signout = async (req: Request, res: Response) => {
+  const authHeader = req.headers["authorization"];
+  jwt.sign(authHeader!, "", { expiresIn: 1 }, (logout) => {
+    if (logout) {
+      res.send({ msg: "You have been Logged Out" });
+    } else {
+      res.send({ msg: "Logout error" });
+    }
+  });
+};
+
+export const user = async (req: Request, res: Response) => {
+  const { email } = req.body;
+  try {
+    // find a user by their email
+    const user = await User.findOne({ email });
+
+    // if user email is found return it
+    if (user) {
+      return res.status(201).send(user);
+    } else {
+      return res
+        .status(401)
+        .send({ error: "User not logged in or does not exist" });
     }
   } catch (error) {
     console.log(error);

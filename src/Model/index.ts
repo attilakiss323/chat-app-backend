@@ -1,4 +1,4 @@
-import { Sequelize, DataTypes } from "sequelize";
+import { Sequelize } from "sequelize";
 
 // Database connection with dialect of postgres specifying the database we are using
 const sequelize = new Sequelize(
@@ -16,7 +16,7 @@ sequelize
     console.log(err);
   });
 
-const users = require("./userModel")(sequelize, DataTypes);
+const users = require("./userModel")(sequelize);
 
 export const db = {
   sequelize,
