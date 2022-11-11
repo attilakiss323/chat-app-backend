@@ -1,17 +1,18 @@
 import bcrypt from "bcrypt";
-import { db } from "../Model";
+import { db } from "../Models";
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 
-const User = db.users;
+const User = db.user;
 
 // signing a user up
 // hashing users password before its saved to the database with bcrypt
 export const signup = async (req: Request, res: Response) => {
   try {
-    const { userName, email, password } = req.body;
+    const { firstName, lastName, email, password } = req.body;
     const data = {
-      userName,
+      firstName,
+      lastName,
       email,
       password: await bcrypt.hash(password, 10),
     };
@@ -44,7 +45,7 @@ export const login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
     // find a user by their email
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ where: { email } });
 
     // if user email is found, compare password with bcrypt
     if (user) {
@@ -93,7 +94,7 @@ export const user = async (req: Request, res: Response) => {
   const { email } = req.body;
   try {
     // find a user by their email
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ where: { email } });
 
     // if user email is found return it
     if (user) {

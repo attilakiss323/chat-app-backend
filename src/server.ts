@@ -1,6 +1,6 @@
 import express from "express";
 import cookieParser from "cookie-parser";
-import { db } from "./Model";
+import { db } from "./Models";
 import userRoutes from "./Routes/userRoutes";
 import dotenv from "dotenv";
 

@@ -1,10 +1,10 @@
-import { db } from "../Model";
+import { db } from "../Models";
 import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 
-const User = db.users;
+const User = db.user;
 
-// Function to check if username or email already exist in the database
+// Function to check if email already exist in the database
 export const saveUser = async (
   req: Request,
   res: Response,
@@ -12,17 +12,6 @@ export const saveUser = async (
 ) => {
   // search the database to see if user exist
   try {
-    const username = await User.findOne({
-      where: {
-        userName: req.body.userName,
-      },
-    });
-
-    // if username exist in the database respond with a status of 409
-    if (username) {
-      return res.status(409).json({ error: "Username already exists" }).send();
-    }
-
     // checking if email already exist
     const emailcheck = await User.findOne({
       where: {
@@ -49,14 +38,16 @@ export const isAuthenticated = async (
   try {
     const { token } = req.cookies;
 
-    console.log("jwt", token);
     if (!token) {
       return next("Authentication error!");
     }
     const verify = await jwt.verify(token, process.env.AUTH_SECRET_KEY!);
 
-    console.log("verify", verify);
-    req.body.user = await User.findOne({ id: (verify as JwtPayload).id });
+    req.body.user = await User.findOne({
+      where: {
+        id: (verify as unknown as JwtPayload).id,
+      },
+    });
     next();
   } catch (error) {
     return next(error);

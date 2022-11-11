@@ -5,7 +5,6 @@ import { Routes } from "./routes";
 
 const router = express.Router();
 
-// passing the middleware function to the signup
 router.post(Routes.signup, saveUser, signup);
 
 router.post(Routes.login, login);

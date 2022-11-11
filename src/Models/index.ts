@@ -1,4 +1,6 @@
 import { Sequelize } from "sequelize";
+import { User } from "./user";
+import { Conversation } from "./conversation";
 
 // Database connection with dialect of postgres specifying the database we are using
 const sequelize = new Sequelize(
@@ -16,10 +18,23 @@ sequelize
     console.log(err);
   });
 
-const users = require("./userModel")(sequelize);
+const user = User(sequelize);
+const conversation = Conversation(sequelize);
+
+user.hasMany(conversation, {
+  sourceKey: "id",
+  foreignKey: "userId",
+  as: "conversations",
+});
+
+conversation.belongsTo(user, {
+  foreignKey: "userId",
+  as: "user",
+});
 
 export const db = {
   sequelize,
   Sequelize,
-  users,
+  user,
+  conversation,
 };
