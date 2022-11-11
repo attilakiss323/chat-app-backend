@@ -108,3 +108,17 @@ export const user = async (req: Request, res: Response) => {
     console.log(error);
   }
 };
+
+export const users = async (req: Request, res: Response) => {
+  try {
+    const users = await User.findAll();
+
+    if (users) {
+      return res.status(201).send(users);
+    } else {
+      res.status(401).send({ error: "Error getting all users" });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};

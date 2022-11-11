@@ -3,4 +3,5 @@ export enum Routes {
   signup = "/signup",
   signout = "/signout",
   user = "/user",
+  users = "/users",
 }

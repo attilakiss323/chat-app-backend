@@ -1,39 +1,5 @@
 "use strict";
-import {
-  Model,
-  InferAttributes,
-  InferCreationAttributes,
-  Sequelize,
-  DataTypes,
-  Optional,
-} from "sequelize";
-
-// module.exports = (sequelize: Sequelize) => {
-//   class Conversation extends Model<
-//     InferAttributes<Conversation>,
-//     InferCreationAttributes<Conversation>
-//   > {
-//     /**
-//      * Helper method for defining associations.
-//      * This method is not a part of Sequelize lifecycle.
-//      * The `models/index` file will call this method automatically.
-//      */
-//     static associate(models: any) {
-//       // define association here
-//       models.Conversation.hasMany(models.User);
-//     }
-//   }
-//   Conversation.init(
-//     {
-//       userId: DataTypes.STRING,
-//       messages: DataTypes.ARRAY(DataTypes.JSON),
-//     },
-//     {
-//       sequelize,
-//       modelName: "Conversation",
-//     }
-//   );// };
-
+import { Model, Sequelize, DataTypes, Optional } from "sequelize";
 interface ConversationType {
   id: string;
   userId?: string;
