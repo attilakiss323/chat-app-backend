@@ -36,12 +36,15 @@ export const isAuthenticated = async (
   next: NextFunction
 ) => {
   try {
-    const { token } = req.cookies;
+    const { token } = req.headers;
 
     if (!token) {
       return next("Authentication error!");
     }
-    const verify = await jwt.verify(token, process.env.AUTH_SECRET_KEY!);
+    const verify = await jwt.verify(
+      token as string,
+      process.env.AUTH_SECRET_KEY!
+    );
 
     req.body.user = await User.findOne({
       where: {

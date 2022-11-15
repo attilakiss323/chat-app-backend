@@ -1,7 +1,7 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import { db } from "./Models";
-import userRoutes from "./Routes/userRoutes";
+import router from "./Routes";
 import dotenv from "dotenv";
 
 // initialize env variables
@@ -24,7 +24,7 @@ db.sequelize.sync({ force: false }).then(() => {
 });
 
 // routes for the user API
-app.use("/", userRoutes);
+app.use("/", router);
 
 // listening to server connection
 app.listen(PORT, () => console.log(`Server is connected on ${PORT}`));

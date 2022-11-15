@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import { db } from "../Models";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { Request, Response } from "express";
 
 const User = db.user;
@@ -30,7 +30,7 @@ export const signup = async (req: Request, res: Response) => {
       res.cookie("jwt", token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true });
 
       // Send user data
-      return res.status(201).send(user);
+      return res.status(201).send({ user, token });
     } else {
       return res.status(409).send({ error: "Details are not correct" });
     }
@@ -67,7 +67,7 @@ export const login = async (req: Request, res: Response) => {
         });
 
         // send user data
-        return res.status(201).send(user);
+        return res.status(201).send({ user, token });
       } else {
         return res.status(401).send({ error: "Authentication failed" });
       }
@@ -111,10 +111,23 @@ export const user = async (req: Request, res: Response) => {
 
 export const users = async (req: Request, res: Response) => {
   try {
+    const { token } = req.headers;
+
+    const verify = await jwt.verify(
+      token as string,
+      process.env.AUTH_SECRET_KEY!
+    );
+
+    const currentUser = await User.findOne({
+      where: {
+        id: (verify as unknown as JwtPayload).id,
+      },
+    });
+
     const users = await User.findAll();
 
     if (users) {
-      return res.status(201).send(users);
+      return res.status(201).send({ users, currentUser });
     } else {
       res.status(401).send({ error: "Error getting all users" });
     }

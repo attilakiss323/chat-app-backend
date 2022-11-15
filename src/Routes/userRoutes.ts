@@ -1,24 +1,16 @@
-import express from "express";
-import {
-  signup,
-  login,
-  signout,
-  user,
-  users,
-} from "../Controllers/userController";
+import { signup, login, signout, user, users } from "../Controllers";
 import { saveUser, isAuthenticated } from "../Middleware/userAuth";
-import { Routes } from "./routes";
+import { Routes } from "./index";
+import { Router } from "express";
 
-const router = express.Router();
+export const userRoutes = (router: Router) => {
+  router.post(Routes.signup, saveUser, signup);
 
-router.post(Routes.signup, saveUser, signup);
+  router.post(Routes.login, login);
 
-router.post(Routes.login, login);
+  router.post(Routes.signout, signout);
 
-router.post(Routes.signout, signout);
+  router.post(Routes.user, isAuthenticated, user);
 
-router.post(Routes.user, isAuthenticated, user);
-
-router.get(Routes.users, isAuthenticated, users);
-
-export default router;
+  router.get(Routes.users, isAuthenticated, users);
+};
