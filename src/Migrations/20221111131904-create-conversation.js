@@ -11,10 +11,10 @@ module.exports = {
       },
       userId: {
         allowNull: true,
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
       },
       messages: {
-        type: Sequelize.ARRAY(Sequelize.JSON)
+        type: Sequelize.JSON,
       },
       createdAt: {
         allowNull: false,

@@ -8,20 +8,11 @@ export const conversation = async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
 
-    console.log("email ::::::::::::::::::::", email);
-
     const user = await User.findOne({
-      include: { model: Conversation, as: "conversations" },
       where: { email },
+      include: { model: Conversation, as: "Conversation" },
     });
 
-    console.log("user :::::::::::::::::::", user);
-    // const conversation = await Conversation.findOne({
-    //   include: User,
-    //   where: { email },
-    // });
-
-    // console.log("Conversation", conversation);
     if (user) {
       return res.status(201).send(user);
     } else {

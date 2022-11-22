@@ -17,7 +17,7 @@ interface ConversationInstance
 
 export const Conversation = (sequelize: Sequelize) =>
   sequelize.define<ConversationInstance>(
-    "Conversation",
+    "Conversations",
     {
       id: {
         allowNull: false,
@@ -31,7 +31,7 @@ export const Conversation = (sequelize: Sequelize) =>
         allowNull: true,
       },
       messages: {
-        type: DataTypes.ARRAY(DataTypes.JSON),
+        type: DataTypes.JSON,
       },
     },
     { timestamps: true }

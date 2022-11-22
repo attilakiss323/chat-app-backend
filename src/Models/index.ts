@@ -24,12 +24,12 @@ const conversation = Conversation(sequelize);
 user.hasMany(conversation, {
   sourceKey: "id",
   foreignKey: "userId",
-  as: "conversations",
+  as: "Conversation",
 });
 
 conversation.belongsTo(user, {
   foreignKey: "userId",
-  as: "user",
+  as: "User",
 });
 
 export const db = {
