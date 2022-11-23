@@ -67,6 +67,7 @@ export const login = async (req: Request, res: Response) => {
         });
 
         // send user data
+        // password is also sent, which is ok for now, but should be fixed
         return res.status(201).send({ user, token });
       } else {
         return res.status(401).send({ error: "Authentication failed" });
@@ -127,6 +128,7 @@ export const users = async (req: Request, res: Response) => {
     const users = await User.findAll();
 
     if (users) {
+      // TODO: remove password from users eventually
       return res.status(201).send({ users, currentUser });
     } else {
       res.status(401).send({ error: "Error getting all users" });
