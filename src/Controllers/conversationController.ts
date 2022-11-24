@@ -10,7 +10,11 @@ export const conversation = async (req: Request, res: Response) => {
 
     const user = await User.findOne({
       where: { email },
-      include: { model: Conversation, as: "Conversation" },
+      include: {
+        model: Conversation,
+        as: "conversation",
+        where: { contact: "john.doe@mail.com" },
+      },
     });
 
     if (user) {

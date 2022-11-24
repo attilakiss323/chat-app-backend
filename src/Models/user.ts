@@ -17,7 +17,7 @@ interface UserInstance extends Model<UserType, UserCreationType>, UserType {
 
 export const User = (sequelize: Sequelize) =>
   sequelize.define<UserInstance>(
-    "Users",
+    "user",
     {
       id: {
         allowNull: false,
@@ -40,5 +40,5 @@ export const User = (sequelize: Sequelize) =>
         type: DataTypes.STRING,
       },
     },
-    { timestamps: true }
+    { timestamps: true, tableName: "user" }
   );
