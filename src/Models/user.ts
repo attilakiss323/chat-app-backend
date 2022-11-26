@@ -1,6 +1,6 @@
 "use strict";
 import { Model, Sequelize, DataTypes, Optional } from "sequelize";
-interface UserType {
+export interface UserType {
   id: string;
   firstName: string;
   lastName: string;
@@ -10,7 +10,9 @@ interface UserType {
 
 interface UserCreationType extends Optional<UserType, "id"> {}
 
-interface UserInstance extends Model<UserType, UserCreationType>, UserType {
+export interface UserInstance
+  extends Model<UserType, UserCreationType>,
+    UserType {
   createdAt?: Date;
   updatedAt?: Date;
 }

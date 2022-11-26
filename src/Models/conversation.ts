@@ -1,14 +1,16 @@
 "use strict";
 import { Model, Sequelize, DataTypes, Optional } from "sequelize";
-interface ConversationType {
+export interface ConversationType {
   id: string;
   userId?: string;
   messages: Array<Object>;
+  contact: string;
 }
 
-interface ConversationCreationType extends Optional<ConversationType, "id"> {}
+export interface ConversationCreationType
+  extends Optional<ConversationType, "id"> {}
 
-interface ConversationInstance
+export interface ConversationInstance
   extends Model<ConversationType, ConversationCreationType>,
     ConversationType {
   createdAt?: Date;
@@ -27,6 +29,10 @@ export const Conversation = (sequelize: Sequelize) =>
         unique: true,
       },
       userId: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      contact: {
         type: DataTypes.STRING,
         allowNull: true,
       },

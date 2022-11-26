@@ -1,24 +1,41 @@
 import { db } from "../Models";
 import { Request, Response } from "express";
+import { UserInstance } from "Models/user";
+import { ConversationInstance } from "Models/conversation";
 
 const Conversation = db.conversation;
 const User = db.user;
 
 export const conversation = async (req: Request, res: Response) => {
   try {
-    const { email } = req.body;
+    const { email, contact } = req.body;
 
-    const user = await User.findOne({
+    const user = (await User.findOne({
       where: { email },
       include: {
         model: Conversation,
         as: "conversation",
-        where: { contact: "john.doe@mail.com" },
+        where: { contact },
       },
-    });
+    })) as UserInstance & {
+      conversation: ConversationInstance[];
+    };
 
     if (user) {
-      return res.status(201).send(user);
+      const { firstName, lastName, email, conversation } = user;
+      const { messages, contact } = conversation[0];
+
+      const userWithConversation = {
+        firstName,
+        lastName,
+        email,
+        conversation: {
+          messages,
+          contact,
+        },
+      };
+
+      return res.status(201).send(userWithConversation);
     } else {
       return res.status(409).send({ error: "Conversation not found" });
     }
