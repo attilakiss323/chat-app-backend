@@ -2,12 +2,14 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import { db } from "./Models";
 import router from "./Routes";
+import { sockets, SocketNames } from "./Sockets";
 import dotenv from "dotenv";
+import { Server } from "socket.io";
 
 // initialize env variables
 dotenv.config();
 
-// setting up your port
+// setting up port and socket
 const PORT = process.env.PORT || 8080;
 
 // assigning the variable app to express
@@ -27,4 +29,11 @@ db.sequelize.sync({ force: false }).then(() => {
 app.use("/", router);
 
 // listening to server connection
-app.listen(PORT, () => console.log(`Server is connected on ${PORT}`));
+const server = app.listen(PORT, () =>
+  console.log(`Server is connected on ${PORT}`)
+);
+
+// websocket
+const io = new Server(server);
+
+io.on(SocketNames.connect, sockets);
